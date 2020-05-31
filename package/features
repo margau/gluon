@@ -1,37 +1,67 @@
-nodefault 'web-wizard'
+-- The _ prefix allows to perform boolean logic on feature names
+--
+-- Do not use the 'nodefault' flag in feature specifications that  have
+-- such a boolean match expression rather than a single feature name
 
-packages 'web-wizard' \
-	'gluon-config-mode-hostname' \
-	'gluon-config-mode-geo-location' \
-	'gluon-config-mode-contact-info' \
-	'gluon-config-mode-outdoor'
+feature(_'web-wizard', {
+	nodefault = true,
+	packages = {
+		'gluon-config-mode-hostname',
+		'gluon-config-mode-geo-location',
+		'gluon-config-mode-contact-info',
+		'gluon-config-mode-outdoor',
+	},
+})
 
-packages 'web-wizard & autoupdater' \
-	'gluon-config-mode-autoupdater'
+feature(_'web-wizard' and _'autoupdater', {
+	packages = {
+		'gluon-config-mode-autoupdater',
+	},
+})
 
-packages 'web-wizard & (mesh-vpn-fastd | mesh-vpn-tunneldigger)' \
-	'gluon-config-mode-mesh-vpn'
+feature(_'web-wizard' and (_'mesh-vpn-fastd' or _'mesh-vpn-tunneldigger'), {
+	packages = {
+		'gluon-config-mode-mesh-vpn',
+	},
+})
 
 
-nodefault 'web-advanced'
+feature(_'web-advanced', {
+	nodefault = true,
+	packages = {
+		'gluon-web-admin',
+		'gluon-web-network',
+		'gluon-web-wifi-config',
+	},
+})
 
-packages 'web-advanced' \
-	'gluon-web-admin' \
-	'gluon-web-network' \
-	'gluon-web-wifi-config'
+feature(_'web-advanced' and _'autoupdater', {
+	packages = {
+		'gluon-web-autoupdater',
+	},
+})
 
-packages 'web-advanced & autoupdater' \
-	'gluon-web-autoupdater'
+feature(_'status-page' and _'mesh-batman-adv-15', {
+	packages = {
+		'gluon-status-page-mesh-batman-adv',
+	},
+})
 
-packages 'status-page & mesh-batman-adv-15' \
-	'gluon-status-page-mesh-batman-adv'
+feature(_'mesh-batman-adv-15', {
+	packages = {
+		'gluon-ebtables-limit-arp',
+		'gluon-radvd',
+	},
+})
 
-packages 'mesh-batman-adv-15' \
-	'gluon-ebtables-limit-arp' \
-	'gluon-radvd'
+feature(_'mesh-babel', {
+	packages = {
+		'gluon-radvd',
+	},
+})
 
-packages 'mesh-babel' \
-	'gluon-radvd'
-
-packages '!wireless-encryption-wpa3' \
-	'hostapd-mini'
+feature(not _'wireless-encryption-wpa3', {
+	packages = {
+		'hostapd-mini',
+	},
+})
